@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nosso Universo</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
+    }
+
+    .star {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite;
+      cursor: pointer;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    #moon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      border: 2px solid white;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+    }
+
+    #moon-text {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 600px;
+      background: rgba(0, 0, 0, 0.9);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid white;
+      text-align: center;
+      z-index: 10;
+      overflow-y: auto;
+      max-height: 80vh;
+    }
+
+    #moon-text p {
+      font-size: 1rem;
+      line-height: 1.5rem;
+    }
+
+    #close-btn {
+      margin-top: 20px;
+      background: #fff;
+      color: black;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    audio {
+      display: none;
+    }
+
+    #message-bubble {
+      position: absolute;
+      max-width: 200px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      color: black;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      text-align: center;
+      z-index: 100;
+      display: none;
+      box-shadow: 0 0 10px #fff;
+    }
+
+    @media (min-width: 600px) {
+      #moon {
+        width: 220px;
+        height: 220px;
+      }
+      #moon-text p {
+        font-size: 1.1rem;
+        line-height: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Lua com imagem e clique -->
+  <div id="moon" onclick="toggleMoonText()"></div>
+
+  <!-- Texto que aparece ao clicar na lua -->
+  <div id="moon-text">
+    <p>Meu amor, há um ano eu estava te encontrando na estação Luz e te levei um chocolate, bem no dia dos namorados. Lembro que a única coisa que passava na minha cabeça era: "Meu Deus, que ele seja o meu primeiro namorado, por favor!!" Desde o dia da festa eu sabia que queria sim ter algo com você, a cada conversa este desejo se tornou mais intenso, e o medo de não se tornar real e ser só um "ficante" ou "um quase algo". Mas hoje eu sou sua namorada, como eu pedi à Deus. Foi você e vai continuar sendo até o meu último suspiro! Muito obrigada por ser o melhor namorado do mundo! Você não tem ideia da diferença que faz na minha vida. Meu mundo é mais bonito com você, tem mais cor, tem mais sentimentos, e vamos ter mais histórias e aventuras. Te amo meu amor, o grandíssimo amor da minha vida 💜</p>
+    <button id="close-btn" onclick="toggleMoonText()">Fechar</button>
+  </div>
+
+  <!-- Balão de fala para estrelas -->
+  <div id="message-bubble"></div>
+
+  <!-- Áudio escondido -->
+  <audio id="bg-music" loop>
+    <source src="musica.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script>
+    // Exibir/ocultar texto da lua + tocar música
+    function toggleMoonText() {
+      const text = document.getElementById('moon-text');
+      text.style.display = text.style.display === 'none' ? 'block' : 'none';
+
+      const audio = document.getElementById('bg-music');
+      if (audio.paused) {
+        audio.play();
+      }
+    }
+
+    // Inserir imagem da lua
+    document.getElementById('moon').style.backgroundImage = 'url("nosso-amor.png")';
+
+    // Mensagens de carinho das estrelas
+    const messages = [
+      'Você ilumina meus dias como as estrelas iluminam o céu.',
+      'Cada batida do meu coração pulsa por você.',
+      'Nosso amor é como o universo: infinito e misteriosamente lindo.',
+      'Você é meu porto seguro em meio ao caos das galáxias.',
+      'Com você, tudo faz sentido. Até o silêncio entre as estrelas.'
+    ];
+
+    for (let i = 0; i < 50; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.left = Math.random() * 100 + '%';
+
+      star.onclick = (e) => {
+        const message = messages[Math.floor(Math.random() * messages.length)];
+        const bubble = document.getElementById('message-bubble');
+        bubble.textContent = message;
+        bubble.style.left = e.pageX + 'px';
+        bubble.style.top = e.pageY + 'px';
+        bubble.style.display = 'block';
+        setTimeout(() => {
+          bubble.style.display = 'none';
+        }, 4000);
+      };
+
+      document.body.appendChild(star);
+    }
+  </script>
+
+</body>
+</html>
